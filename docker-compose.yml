@@ -1,0 +1,33 @@
+services:
+  api:
+    build: .
+    container_name: catalog_api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: catalog_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: catalog_db
+      MYSQL_USER: catalog_user
+      MYSQL_PASSWORD: catalog_password
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: catalog_phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ABSOLUTE_URI: http://localhost:8080/
+    depends_on:
+      - db
