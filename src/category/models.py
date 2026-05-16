@@ -14,8 +14,8 @@ class Category(Base, TimestampMixin):
 
     parent_category_id: Mapped[int] = mapped_column(
         ForeignKey("category.category_id", ondelete="CASCADE"),
-        default=0,
-        nullable=False,
+        default=None,
+        nullable=True,
         index=True,
     )
 
@@ -32,16 +32,14 @@ class Category(Base, TimestampMixin):
     status: Mapped[int] = mapped_column(SmallInteger, default=0, nullable=False)
 
     children: Mapped[list["Category"]] = relationship(
-        "Category",
-        cascade="all, delete-orphan",
-        primaryjoin="Category.category_id == foreign(Category.parent_category_id)",
-        back_populates="parent",
-    )
+    "Category",
+    back_populates="parent",
+    cascade="all, delete-orphan",
+    passive_deletes=True,
+)
 
     parent: Mapped["Category | None"] = relationship(
         "Category",
         remote_side=[category_id],
-        primaryjoin="foreign(Category.parent_category_id) == Category.category_id",
         back_populates="children",
-        viewonly=True,
     )
