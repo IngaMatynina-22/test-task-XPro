@@ -5,3 +5,4 @@ aiomysql
 pydantic-settings
 python-dotenv
 alembic
+cryptography
