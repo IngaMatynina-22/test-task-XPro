@@ -8,6 +8,8 @@ from src.database import init_db
 from src.category.router import router as category_router
 from src.database import init_db
 
+from src.product.router import router as product_router
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
@@ -22,6 +24,7 @@ app = FastAPI(
 )
 
 app.include_router(category_router)
+app.include_router(product_router)
 
 @app.get("/health")
 async def health_check():
