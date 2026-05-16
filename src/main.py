@@ -10,9 +10,12 @@ from src.database import init_db
 
 from src.product.router import router as product_router
 
+from src.seed import seed_database
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+    await seed_database()
     yield
 
 
